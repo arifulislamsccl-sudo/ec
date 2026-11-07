@@ -31,7 +31,7 @@ Internet ছাড়াও চলে। শুধু হলুদ input ঘর 
 
 ## Update করা
 - Excel-এ কোনো হিসাব বা data বদলালে নতুন `data.js` বানাতে হবে (Claude-কে বললেই বানিয়ে দেবে)।
-- নতুন ফাইল GitHub-এ upload করার সময় `sw.js`-এর প্রথম লাইনের `engcalc-v2` বদলে `engcalc-v3` করে দিন, যাতে সবার মোবাইলে নতুন version আসে।
+- নতুন ফাইল GitHub-এ upload করার সময় `sw.js`-এর প্রথম লাইনের `engcalc-v8` বদলে `engcalc-v9` করে দিন, যাতে সবার মোবাইলে নতুন version আসে।
 - App একবার খুললে পেছনে update নামে, পরেরবার খুললে নতুন version দেখায়।
 
 ## সতর্কতা
