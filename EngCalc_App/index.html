@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B5394">
+<meta name="description" content="Mechanical, process, maintenance, energy and project engineering calculators – works offline.">
+<title>Engineering Calculators</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+:root{--blue:#0B5394;--blue2:#3D85C6;--sky:#CFE2F3;--yellow:#FFF2CC;--green:#D9EAD3;--ok:#C6EFCE;--okt:#006100;--warn:#FFEB9C;--warnt:#9C5700;--bad:#FFC7CE;--badt:#9C0006;--bg:#F3F6FA;--ink:#1d2733;--mute:#5f6b7a;--line:#dfe5ec}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;background:var(--blue);color:#fff;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top));box-shadow:0 2px 6px rgba(0,0,0,.15)}
+header h1{flex:1;margin:0;font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header button{background:rgba(255,255,255,.15);border:0;color:#fff;font-size:18px;border-radius:10px;min-width:40px;height:36px;cursor:pointer}
+#install{display:none;font-size:13px;padding:0 10px}
+main{max-width:760px;margin:0 auto;padding:12px 12px 90px}
+.hero{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border-radius:16px;padding:16px;margin-bottom:12px}
+.hero-t{font-size:18px;font-weight:700}.hero-s{opacity:.9;font-size:13px;margin-top:4px}
+.search{width:100%;font-size:16px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fff}
+.grp h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);margin:18px 4px 8px}
+.card{display:flex;gap:12px;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;font:inherit;color:inherit;align-items:flex-start}
+.card:active{background:#eef4fb}
+.code{flex:none;min-width:44px;text-align:center;background:var(--sky);color:var(--blue);font-weight:800;border-radius:10px;padding:6px 6px;font-size:13px}
+.ct{flex:1;min-width:0}.cn{font-weight:700}.cd{color:var(--mute);font-size:12.5px;margin-top:2px}
+.st{font-size:12px;margin-top:6px;padding:4px 8px;border-radius:8px;background:#f2f4f7;color:var(--mute);display:inline-block;max-width:100%}
+.st:empty{display:none}
+.st.ok,.status.ok .ov{background:var(--ok);color:var(--okt)}.st.warn,.status.warn .ov{background:var(--warn);color:var(--warnt)}.st.bad,.status.bad .ov{background:var(--bad);color:var(--badt)}
+.foot{color:var(--mute);font-size:12px;margin:16px 4px}
+.desc{color:var(--mute);font-size:13.5px;margin:2px 2px 12px}
+.sec{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.sec-h{display:flex;width:100%;justify-content:space-between;align-items:center;background:var(--blue2);color:#fff;border:0;padding:10px 14px;font:700 14px/1.2 inherit;font-family:inherit;cursor:pointer;text-align:left}
+.sec.closed .sec-b{display:none}.sec.closed .chev{transform:rotate(-90deg)}
+.chev{transition:transform .15s}
+.sec-b{padding:6px 12px 10px}
+.field{display:grid;grid-template-columns:1fr;gap:4px;padding:8px 0;border-bottom:1px solid #f0f2f5}
+.field:last-child{border-bottom:0}
+.fl{font-weight:600;font-size:14px}
+.fi{display:flex;align-items:center;gap:8px}
+.inp{flex:1;min-width:0;font-size:16px;padding:10px 12px;border:1.5px solid #e6d58d;background:var(--yellow);color:#0000c8;font-weight:700;border-radius:10px;font-family:inherit}
+select.inp{appearance:auto;width:100%;max-width:100%;text-overflow:ellipsis}
+.inp:focus{outline:none;border-color:var(--blue2);box-shadow:0 0 0 3px rgba(61,133,198,.25)}
+.inp.auto{color:#4a6fa5;font-style:italic}
+.unit{color:var(--mute);font-size:13px;max-width:84px;overflow-wrap:anywhere}
+.fn,.on{color:#7a8594;font-size:12px}
+.out{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid #f0f2f5;align-items:center}
+.out:last-child{border-bottom:0}
+.ol{font-size:14px}.ovw{text-align:right;white-space:nowrap}.ov{font-weight:600}
+.on{grid-column:1/-1}
+.out.r .ol{font-weight:700}.out.r .ov{background:var(--green);padding:3px 10px;border-radius:8px;font-weight:800}
+.out.main{grid-template-columns:1fr}.out.main .ovw{text-align:left}.out.main .ov{display:inline-block;font-size:26px;color:var(--blue);background:var(--green);padding:6px 14px;border-radius:12px}
+.out.wide{grid-template-columns:1fr}.out.wide .ovw{text-align:left;white-space:normal}.out.wide .ov{display:block;background:var(--green);padding:10px 12px;border-radius:10px;font-weight:700;white-space:normal}
+.out.status .ov{display:block;white-space:normal;text-align:left;padding:10px 12px;border-radius:10px;font-weight:700}
+.out.status:not(.wide) {grid-template-columns:1fr}.out.status .ovw{text-align:left;white-space:normal}
+.note{color:var(--mute);font-size:12px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl,.grid{border-collapse:collapse;font-size:12.5px;min-width:100%}
+.tbl th{background:var(--blue2);color:#fff;padding:6px;font-weight:700;position:sticky;top:0;white-space:normal;min-width:64px}
+.tbl td,.grid td{border:1px solid var(--line);padding:5px 6px;text-align:center;white-space:nowrap}
+.tbl tr.sel td{background:var(--ok);color:var(--okt);font-weight:700}
+.grid td{min-width:70px}.grid td .inp{padding:6px 8px;font-size:14px;min-width:90px;border-radius:6px}
+.grid td.gh{background:var(--blue2);color:#fff;font-weight:700;white-space:normal}.grid td.gr{background:var(--green);font-weight:700}.grid td.gb{font-weight:700}.grid td.gt{background:var(--blue);color:#fff}
+.grid td.ok{background:var(--ok);color:var(--okt)}.grid td.warn{background:var(--warn);color:var(--warnt)}.grid td.bad{background:var(--bad);color:var(--badt)}
+.grid.data td{text-align:left;white-space:normal;min-width:60px}.grid tr.gh2 td{background:var(--sky);font-weight:700}
+.dh{color:var(--blue);margin:16px 2px 6px;font-size:15px}
+.actions{display:flex;justify-content:center;margin:8px 0 20px}
+.btn{font:inherit;font-weight:700;border-radius:12px;padding:10px 16px;border:1px solid var(--line);background:#fff;color:var(--blue);cursor:pointer}
+#bottom{position:fixed;left:0;right:0;bottom:0;display:none;gap:6px;padding:8px 10px;padding-bottom:calc(8px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);box-shadow:0 -2px 8px rgba(0,0,0,.06);z-index:5;justify-content:center}
+.nav{flex:1;max-width:240px;font:700 14px/1 inherit;font-family:inherit;padding:12px 8px;border-radius:12px;border:1px solid var(--line);background:var(--sky);color:var(--blue);cursor:pointer}
+.nav.home{background:var(--blue);color:#fff}.nav:disabled{opacity:.4}
+.out.status.ok .ov{background:var(--ok);color:var(--okt)}.out.status.warn .ov{background:var(--warn);color:var(--warnt)}.out.status.bad .ov{background:var(--bad);color:var(--badt)}
+.kvh{font-weight:800;color:var(--blue);margin:12px 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.out.kvwide{grid-template-columns:1fr auto}
+.items{display:flex;flex-direction:column;gap:10px}
+.item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.ih{font-weight:800;color:var(--blue);margin-bottom:6px}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.if{display:flex;flex-direction:column;gap:3px;min-width:0}.if .inp{padding:8px 10px;font-size:16px}
+.ifl{font-size:11.5px;color:var(--mute);font-weight:600}
+.if.io .ov{font-weight:700;padding:8px 0}.if.r .ov{background:var(--green);padding:8px 10px;border-radius:8px;display:block}
+.if.ok .ov{background:var(--ok);color:var(--okt)}.if.warn .ov{background:var(--warn);color:var(--warnt)}.if.bad .ov{background:var(--bad);color:var(--badt)}
+.ihelp{grid-column:1/-1}
+@media (min-width:640px){.field{grid-template-columns:minmax(180px,1fr) minmax(200px,1.2fr)}.fn{grid-column:2}}
+</style>
+</head>
+<body>
+<header>
+  <button id="back" aria-label="Home" style="visibility:hidden">⌂</button>
+  <h1 id="title">Engineering Calculators</h1>
+  <button id="install" aria-label="Install app">Install</button>
+</header>
+<main id="view"><p style="text-align:center;color:#5f6b7a;margin-top:40px">Loading…</p></main>
+<nav id="bottom"></nav>
+<script src="data.js"></script>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
